@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/alfredoxyanez/go_prisma_chi_example/database"
+	"github.com/alfredoxyanez/go_prisma_chi_example/helpers"
 	"github.com/alfredoxyanez/go_prisma_chi_example/prisma/db"
 	"github.com/go-chi/chi"
 )
@@ -20,17 +21,12 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	usersMap := make(map[string]interface{})
 	usersMap["users"] = allUsers
-	out, err := json.MarshalIndent(usersMap, "", "\t")
+	err = helpers.WriteJSON(w, http.StatusOK, usersMap)
 	if err != nil {
-		fmt.Println("Error Creating JSON")
+		fmt.Println("Cannot form response")
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, err = w.Write(out)
-	if err != nil {
-		fmt.Println("Error Creating Writing")
-	}
 }
 
 func GetUserByID(w http.ResponseWriter, r *http.Request) {
@@ -42,16 +38,9 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Cannot find user")
 		return
 	}
-	out, err := json.MarshalIndent(user, "", "\t")
+	err = helpers.WriteJSON(w, http.StatusOK, user)
 	if err != nil {
-		fmt.Println("Error Creating JSON")
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, err = w.Write(out)
-	if err != nil {
-		fmt.Println("Error Creating Writing")
+		fmt.Println("Cannot form response")
 		return
 	}
 
@@ -75,16 +64,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Cannot create user")
 		return
 	}
-	out, err := json.MarshalIndent(user, "", "\t")
+	err = helpers.WriteJSON(w, http.StatusOK, user)
 	if err != nil {
-		fmt.Println("Error Creating JSON")
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, err = w.Write(out)
-	if err != nil {
-		fmt.Println("Error Creating Writing")
+		fmt.Println("Cannot form response")
+		return
 	}
 
 }
