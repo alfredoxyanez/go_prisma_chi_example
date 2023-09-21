@@ -1,0 +1,32 @@
+package router
+
+import (
+	"net/http"
+
+	"github.com/alfredoxyanez/go_prisma_chi_example/controllers"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
+)
+
+func Routes() http.Handler {
+	router := chi.NewRouter()
+	router.Use(middleware.Logger)
+	router.Use(cors.Handler(cors.Options{
+		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
+		AllowedOrigins: []string{"https://*", "http://*"},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
+
+	router.Get("/api/users", controllers.GetAllUsers)
+	router.Get("/api/user/{id}", controllers.GetUserByID)
+	router.Post("/api/user", controllers.CreateUser)
+
+	return router
+
+}
