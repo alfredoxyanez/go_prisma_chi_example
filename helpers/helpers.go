@@ -17,7 +17,7 @@ func WriteJSON(w http.ResponseWriter, status int, data interface{}) error {
 	w.WriteHeader(http.StatusOK)
 	_, err = w.Write(out)
 	if err != nil {
-		fmt.Println("Error Creating Writing")
+		fmt.Println("Error Writing to response")
 		return err
 	}
 	return nil
