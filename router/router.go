@@ -11,7 +11,9 @@ import (
 
 func Routes() http.Handler {
 	router := chi.NewRouter()
+	// Use built-In logger middleware
 	router.Use(middleware.Logger)
+	// Standard router settings
 	router.Use(cors.Handler(cors.Options{
 		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
 		AllowedOrigins: []string{"https://*", "http://*"},
@@ -23,6 +25,7 @@ func Routes() http.Handler {
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
 
+	// Here we link the endpoints to the functions that handle them
 	router.Get("/api/users", controllers.GetAllUsers)
 	router.Get("/api/user/{id}", controllers.GetUserByID)
 	router.Post("/api/user", controllers.CreateUser)
